@@ -40,7 +40,8 @@ def onAttack(card1, card2):
             health = library[x]['stats']['health']
         except:
             health = 1
-        data.append(attack, health)
+        data.append(attack)
+        data.append(health)
     return data
 
 def onAction():

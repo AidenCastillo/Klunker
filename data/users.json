@@ -1,3 +1,34 @@
 {
-    
+    "593615922330075146": {
+        "library": {
+            "name": []
+        },
+        "deck": {
+            "name": []
+        },
+        "claim": false,
+        "rolls": 0,
+        "rank": [
+            "Apprentice"
+        ],
+        "level": 0,
+        "exp": 0,
+        "uses": 0
+    },
+    "863629799301185537": {
+        "library": {
+            "name": []
+        },
+        "deck": {
+            "name": []
+        },
+        "claim": false,
+        "rolls": 0,
+        "rank": [
+            "Apprentice"
+        ],
+        "level": 0,
+        "exp": 0,
+        "uses": 0
+    }
 }

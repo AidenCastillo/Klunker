@@ -1,3 +1,14 @@
 {
-    
+    "Goblin": {
+        "name": "Goblin",
+        "description": "Goblin go brrrr",
+        "type": "creature",
+        "stats": {
+            "health": 1,
+            "attack": 1
+        },
+        "cost": 2,
+        "image": "NA",
+        "action": ""
+    }
 }

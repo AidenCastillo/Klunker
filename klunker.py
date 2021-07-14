@@ -643,7 +643,7 @@ async def battle(ctx, player2=None, *, mode=None):
                         #Question panel
 
                         questionEm=discord.Embed(title=f"Magic The Gathering Help")
-                        questionEm.add_field(name=f"how to play:", value="https://www.youtube.com/watch?v=RZyXU1L3JXk", inline=True)
+                        questionEm.add_field(name=f"Links", value="How to Play: https://www.youtube.com/watch?v=RZyXU1L3JXk\n Wiki: https://github.com/AidenCastillo/klunker/wiki \n Card Wiki: https://github.com/AidenCastillo/klunker/wiki/Card-Wiki", inline=True)
                         questionEm.add_field(name=f"Emote Commands and written Commands:", value="✅=End Turn\n💥=Attack Phase", inline=True)
 
                         await battle.edit(embed=questionEm)
@@ -692,7 +692,7 @@ async def add(ctx):
         else:
             answers.append(msg.content)
 
-    if str(answers[0]) in fullLibrary:
+    if str(answers[0]) not in fullLibrary:
         pass
     else:
         await ctx.send("Card name is already in data base.")
@@ -705,13 +705,6 @@ async def add(ctx):
     else:
         await ctx.send('Not valid catagory.')
         return
-
-    if answers[4] and answers[5] and answers[6] is int:
-        pass
-    else:
-        await ctx.send('Stats or cost is not a integer')
-        return
-
     
     newcard = {}
     newcard[str(answers[0])] = {}
@@ -719,9 +712,12 @@ async def add(ctx):
     newcard[str(answers[0])]['description'] = str(answers[2])
     newcard[str(answers[0])]['type'] = str(answers[3])
     newcard[str(answers[0])]['stats'] = {}
-    newcard[str(answers[0])]['stats']['health'] = int(answers[4])
-    newcard[str(answers[0])]['stats']['attack'] = int(answers[5])
-    newcard[str(answers[0])]['cost'] = int(answers[6])
+    try:
+        newcard[str(answers[0])]['stats']['health'] = int(answers[4])
+        newcard[str(answers[0])]['stats']['attack'] = int(answers[5])
+        newcard[str(answers[0])]['cost'] = int(answers[6])
+    except:
+        await ctx.send('Stats or cost is not a integer')
     newcard[str(answers[0])]['image'] = str(answers[7])
     newcard[str(answers[0])]['action'] = ""
     
