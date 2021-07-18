@@ -1,0 +1,8 @@
+{
+    "Murder": {
+        "name": "Murder",
+        "description": "Destroy target creature",
+        "cost": 3,
+        "image": "https://imgur.com/Q90fcUP.gif"
+    }
+}

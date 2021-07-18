@@ -10,5 +10,14 @@
         "cost": 2,
         "image": "NA",
         "action": ""
+    },
+    "Your Mom": {
+        "name": "Your Mom",
+        "type": "Monster",
+        "stats":"5/5",
+        "cost": 4,
+        "description": "She is gonna hit you with a shoe.",
+        "image": "https://imgur.com/DTfxbWB"
     }
+    
 }

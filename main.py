@@ -404,10 +404,6 @@ async def battle(ctx, player2=None, *, mode=None):
                     main.add_field(name="Field", value=f"{first.name}:{first.field}\n{second.name}:{second.field}", inline=False)
                     return main
 
-                # main=discord.Embed(title=f"{player1.name} vs {player2.name}", description=f"{playerTurn}'s Turn", color=0xff0000)
-                # main.add_field(name=f"{player1.name}'s cards", value="value", inline=True)
-                # main.add_field(name=f"{player2.name}'s cards", value="value", inline=True)
-                # main.add_field(name="Field", value=f"{player1.name}:{player1.field}\n{player2.name}:{player2.field}", inline=False)
 
                 
                 

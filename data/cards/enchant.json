@@ -1,0 +1,9 @@
+{
+    "All that Glitters": {
+        "name": "All that Glitters",
+        "description": "Enchant creature. Enchanted creature get +1/+1 for each artifact and/or enchantment you control.",
+        "cost": 2,
+        "image": "https://imgur.com/Q90fcUP.gif"
+
+    }
+}

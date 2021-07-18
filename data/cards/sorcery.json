@@ -1,0 +1,8 @@
+{
+    "Desecrated Earth": {
+       "name": "Desecrated Earth",
+       "description": "Destroy target land. Its controller discards a card.",
+       "cost": 5,
+       "image": "https://imgur.com/Q90fcUP.gif"
+    }
+}

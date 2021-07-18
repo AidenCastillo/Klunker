@@ -1,0 +1,8 @@
+{
+    "Chromatic Lantern": {
+        "name": "Chromatic Lantern",
+        "description": "Add one mana of any color to your mana pool.",
+        "cost": 3,
+        "image": "https://imgur.com/Q90fcUP.gif"
+    }
+}
