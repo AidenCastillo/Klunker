@@ -2,6 +2,10 @@
     "Murder": {
         "name": "Murder",
         "description": "Destroy target creature",
+        "enter": {
+            "action": "destroy",
+            "target": "any"
+        },
         "cost": 3,
         "image": "https://imgur.com/Q90fcUP.gif"
     }

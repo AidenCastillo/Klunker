@@ -14,10 +14,25 @@
     "Your Mom": {
         "name": "Your Mom",
         "type": "Monster",
-        "stats":"5/5",
+        "stats": {
+            "health": 5,
+            "attack": 5
+        },
         "cost": 4,
         "description": "She is gonna hit you with a shoe.",
-        "image": "https://imgur.com/DTfxbWB"
-    }
-    
+        "image": "https://imgur.com/DTfxbWB",
+        "action": "ground pound"
+    },
+    "Mio Akiyama":{
+        "name": "Mio Akiyama",
+        "type": "Human",
+        "stats": {
+            "health": 8,
+            "attack": 2
+        },
+        "cost": 4,
+        "description": "Stuns creature with dazzle.",
+        "image": "NA",
+        "action": "stun"
+    }   
 }

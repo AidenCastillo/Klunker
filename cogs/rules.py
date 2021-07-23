@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import os
 import sys
 import json
@@ -21,28 +22,60 @@ def setup(client):
 def checkEnter(card):
     library = get_cards()
 
-    health = library[str(card)]['enter']['stats']['health']
-    attack = library[str(card)]['enter']['stats']['attack']
-    target = library[str(card)]['enter']['target']
+    try:
+        health = library[str(card)]['enter']['stats']['health']
+    except:
+        health = NULL
+    try:
+        attack = library[str(card)]['enter']['stats']['attack']
+    except:
+        attack = NULL
+    try:
+        target = library[str(card)]['enter']['target']
+    except:
+        target = NULL
+    try:
+        action = library[str(card)]['enter']['action']
+    except:
+        action = NULL
+        
+    return health, attack, target, action
 
-    return health, attack, target
-
-def onAttack(card1, card2):
+def onAttack(card1, card2=None):
     library = get_cards()
     data = []
-
-    for x in [card1, card2]:
+    
+    if card2 == None:
         try:
-            attack = library[x]['stats']['attack']
+            attack = library[card1]['stats']['attack']
         except:
             attack = 0
         try:
-            health = library[x]['stats']['health']
+            health = library[card1]['stats']['health']
         except:
             health = 1
         data.append(attack)
         data.append(health)
+    else:
+        for x in [card1, card2]:
+            try:
+                attack = library[x]['stats']['attack']
+            except:
+                attack = 0
+            try:
+                health = library[x]['stats']['health']
+            except:
+                health = 1
+            data.append(attack)
+            data.append(health)
     return data
 
-def onAction():
-    return
+def onAction(card):
+    library = get_cards()
+    with open("data/action.json") as f:
+        data = json.load(f.read())
+    
+    action = library[card]['action']
+    data = data[action]
+
+    return action, data

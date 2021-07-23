@@ -445,34 +445,37 @@ async def battle(ctx, player2=None, *, mode=None):
                             await ctx.send(f"{message.author} played {message.content}")
                             card = checkEnter(message.content)
 
-                            if card[3] == 'any':
-                                def check(m):
-                                    return m.author == ctx.author and m.channel == ctx.channel
-                                typemsg = await ctx.send("Type Target creature. Format: ~Goblin")
-                                msg = await client.wait_for('message', timeout=20.0, check=check)
-                                target = msg.content
-                                target = target.replace("~", "")
-                                
-                                if playerTurn.name == player1.name:
-                                    player = player2
-                                else:
-                                    player = player1
-                                
-                                if str(target) in player.field:
-                                    player.field.remove(target)
-                                    
-                                    await ctx.send(f"{playerTurn.name} has used {card[0]['name']} on {target}")
-                                    
+                            if card[4] == 'destroy':
 
-                                    await message.delete()
-                                    await typemsg.delete()
-                                    await msg.delete()
 
-                                    main = createMain(player1, player2, playerTurn)
-                                    await battle.edit(embed=main)
+                                if card[3] == 'any':
+                                    def check(m):
+                                        return m.author == ctx.author and m.channel == ctx.channel
+                                    typemsg = await ctx.send("Type Target creature. Format: ~Goblin")
+                                    msg = await client.wait_for('message', timeout=20.0, check=check)
+                                    target = msg.content
+                                    target = target.replace("~", "")
 
-                                else:
-                                    await ctx.send(f"{target} is not a creature your opponent has in their field")
+                                    if playerTurn.name == player1.name:
+                                        player = player2
+                                    else:
+                                        player = player1
+
+                                    if str(target) in player.field:
+                                        player.field.remove(target)
+
+                                        await ctx.send(f"{playerTurn.name} has used {card[0]['name']} on {target}")
+
+
+                                        await message.delete()
+                                        await typemsg.delete()
+                                        await msg.delete()
+
+                                        main = createMain(player1, player2, playerTurn)
+                                        await battle.edit(embed=main)
+
+                                    else:
+                                        await ctx.send(f"{target} is not a creature your opponent has in their field") 
 
                         elif message.content in allCards and str(message.author) == str(playerTurn.name):
 
@@ -554,6 +557,7 @@ async def battle(ctx, player2=None, *, mode=None):
                             selecting = False
                             @client.event
                             async def on_message(message):
+
                                 global selecting
                                 if selecting == False:
                                     selecting = True
@@ -571,6 +575,7 @@ async def battle(ctx, player2=None, *, mode=None):
                                             options = await ctx.send(f"{opponent.name} Type creature you want to block with, type a instant, or type No/no for no blocking")
                                             msg = await client.wait_for("message", check=check)
                                             await msg.delete()
+                                            
                                             card2 = msg.content
 
                                             if str(card2) in opponent.field:
@@ -589,7 +594,16 @@ async def battle(ctx, player2=None, *, mode=None):
                                                     await enter.delete()
                                                     await options.delete()
                                                     await message.delete()
+                                            if msg.content == "No" or 'no':
+                                                data = onAttack(card1)
 
+                                                opponent.health -= data[0]
+                                                await enter.delete()
+                                                await options.delete()
+                                                await message.delete()
+
+                                                main = createMain(player1, player2, playerTurn, f"{card1} attacked Opponent's health.")
+                                                await battle.edit(embed=main)
                                         elif str(msg.content) == 'action':
                                             data = onAction(card)
                                 else:
