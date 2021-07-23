@@ -3,6 +3,7 @@ Discord py bot that can play magic the gathering
 
 # Bug Hunter
 Hello Bug Hunters. To help out with production of this bot, we need help catching bugs and issues to make our system work, faster, better, and with less chance of all of you data being deleted.
+
 ![picture alt](https://media1.tenor.com/images/fd27cb7edfa154f7e4adcfb881a4c2ea/tenor.gif?itemid=20623958 "Bug")
 
 ## How to Help
