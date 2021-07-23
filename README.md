@@ -1,10 +1,10 @@
 # Klunker
 Discord py bot that can play magic the gathering
 
-![picture alt](https://media1.tenor.com/images/fd27cb7edfa154f7e4adcfb881a4c2ea/tenor.gif?itemid=20623958 "Bug")
-
 # Bug Hunter
 Hello Bug Hunters. To help out with production of this bot, we need help catching bugs and issues to make our system work, faster, better, and with less chance of all of you data being deleted.
+![picture alt](https://media1.tenor.com/images/fd27cb7edfa154f7e4adcfb881a4c2ea/tenor.gif?itemid=20623958 "Bug")
+
 ## How to Help
 We want you to help us catch bugs and report them back to us so we can fix them and keep you happy using our bot. So how do you report to us?
 
@@ -13,10 +13,10 @@ We want you to help us catch bugs and report them back to us so we can fix them 
 3. Use ~issue, and follow the directions the bot gives you.
 4. Done. You have made a issue for us to review and handle
 
-![picture alt](https://media1.tenor.com/images/e3d74c47cafa47bec8717ee51c3f8ae2/tenor.gif?itemid=21557814 "Computer")
-
 # Using
 A few things you may like/need to know before using this bot.
+
+![picture alt](https://media1.tenor.com/images/e3d74c47cafa47bec8717ee51c3f8ae2/tenor.gif?itemid=21557814 "Computer")
 
 ## Setup
 First thing you need to do before using klunker is create a `variable.py` file in the same directory as main.py. All items found in the section `Variables` will be placed into the `variable.py` file formated as:
