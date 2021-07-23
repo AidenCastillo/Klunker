@@ -49,7 +49,6 @@ for filename in os.listdir('./cogs'):
 
 #testing
 
-testmode = False
 
 
 #listening commands and events
@@ -750,13 +749,6 @@ async def add(ctx):
 
 
 #Non Magic commands
-@client.command()
-async def laugh(ctx):
-    author = ctx.author
-    
-    embed=discord.Embed(title="" , description="description", color=0xff0000)
-    embed.add_field(name="field", value="value", inline=False)
-    await ctx.send(embed=embed)
 
 #Osu
 def get_token():
