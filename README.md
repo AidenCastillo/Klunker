@@ -1,4 +1,4 @@
-# klunker
+# Klunker
 Discord py bot that can play magic the gathering
 
 # Using
