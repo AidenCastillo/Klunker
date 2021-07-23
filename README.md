@@ -1,5 +1,8 @@
 # Klunker
 Discord py bot that can play magic the gathering
+
+![picture alt](http://via.placeholder.com/200x150 "Title is optional")
+
 # Bug Hunter
 Hello Bug Hunters. To help out with production of this bot, we need help catching bugs and issues to make our system work, faster, better, and with less chance of all of you data being deleted.
 ## How to Help
