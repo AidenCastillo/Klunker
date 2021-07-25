@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import os
 import sys
 import json
@@ -25,19 +24,19 @@ def checkEnter(card):
     try:
         health = library[str(card)]['enter']['stats']['health']
     except:
-        health = NULL
+        health = None
     try:
         attack = library[str(card)]['enter']['stats']['attack']
     except:
-        attack = NULL
+        attack = None
     try:
         target = library[str(card)]['enter']['target']
     except:
-        target = NULL
+        target = None
     try:
         action = library[str(card)]['enter']['action']
     except:
-        action = NULL
+        action = None
         
     return health, attack, target, action
 
