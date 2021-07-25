@@ -9,7 +9,7 @@ Hello Bug Hunters. To help out with production of this bot, we need help catchin
 ## How to Help
 We want you to help us catch bugs and report them back to us so we can fix them and keep you happy using our bot. So how do you report to us?
 
-1. If you already have a GitHub account, you don't not have to go any further and you can make a issue in our repository `github.com/AidenCastillo/klunker/issues`. If you do not, you can dm Klunker#6013 and use the command ~bughunter.
+1. If you already have a GitHub account, you don't not have to go any further and you can make a issue in our repository `github.com/AidenCastillo/klunker/issues`. If you do not, you can dm Klunker#6013 and use the command ~bughunter. (This way has more steps then using a github account, so we recommend to use github. You also get credit for your issues and bugs more.)
 2. Fill out the questions
 3. Use ~issue, and follow the directions the bot gives you.
 4. Done. You have made a issue for us to review and handle

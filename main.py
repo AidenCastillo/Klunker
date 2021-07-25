@@ -23,7 +23,7 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 from discord.ext import tasks
 from discord.utils import get
-from discord.ext.commands.core import check
+from discord.ext.commands.core import check, dm_only
 from discord import embeds, message
 from discord.activity import CustomActivity
 from discord.channel import DMChannel
@@ -54,7 +54,7 @@ for filename in os.listdir('./cogs'):
 #listening commands and events
 @client.event
 async def on_ready():
-    activity = discord.Activity(type=discord.ActivityType.listening, name="Suggest new cards, ~add")
+    activity = discord.Activity(type=discord.ActivityType.listening, name="Try to break my bot, i need bug hunting. DM me if you find something")
     await client.change_presence(status=discord.Status.online, activity=activity)
     print('We have logged in as {0.user}'.format(client))
 
@@ -558,7 +558,7 @@ async def battle(ctx, player2=None, *, mode=None):
                             async def on_message(message):
 
                                 global selecting
-                                if selecting == False:
+                                if selecting == False and message.author.id == playerTurn.id:
                                     selecting = True
                                     card1 = message.content
                                     if str(card1) in playerTurn.field:
@@ -748,7 +748,32 @@ async def add(ctx):
     await ctx.send('Your card has been send for review to be added into my full library and to be used by others. Please wait some Time for someone to look over it.')
 
 
-#Non Magic commands
+#Dm Channel
+@client.command()
+@commands.dm_only()
+async def bughunter(ctx):
+    questions = ["Are you sure you want to become a bug hunter."]
+    answers = []
+
+    for i in questions:
+        await ctx.send(i)
+        
+        def check(m):
+            return m.author == ctx.author and m.channel == ctx.channel
+        try:
+            msg = await client.wait_for("messsage", timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.send("You didn't answer in under the time limit.")
+            return
+        else:
+            answers.append(msg.content)
+        print(answers)
+
+@client.command()
+@commands.dm_only()
+async def issue(ctx):
+    await ctx.send("test")
+
 
 #Osu
 def get_token():
