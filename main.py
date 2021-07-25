@@ -174,7 +174,7 @@ async def cards(ctx, *, arg=None):
             embed=discord.Embed(title=f"{arg.capitalize()} Card Library", description=msg, color=0xff0000)   
         
         except:
-            msg = get_cards()
+            msg = getCardsName()
             msg = str(msg).replace('[',' ').replace(']',' ').replace("'", " ")
             embed=discord.Embed(title="Full Card Library", description=msg, color=0xff0000)
         
