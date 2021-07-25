@@ -1,7 +1,7 @@
 {
     "Forest": {
         "name": "Forest",
-        "Description": "When tapped, gain 1 energy for your turn.",
+        "description": "When tapped, gain 1 energy for your turn.",
         "energy": 1,
         "image": "NA"
     }
