@@ -205,7 +205,7 @@ async def library(ctx):
 async def roll(ctx):
     path = dir_path + "/data/cards/"
     
-    cards = get_cards()
+    cards = getCardsName()
     rolled = random.choice(cards)
     
     library = {}

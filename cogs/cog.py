@@ -24,3 +24,15 @@ def get_cards():
             x = json.loads(f.read())
         data.update(x)
     return data
+
+def getCardsName():
+    data = {}
+    names = []
+
+    for filename in os.listdir(dir_path + "/data/cards/"):
+        with open(f"data/cards/{filename}") as f:
+            info = json.loads(f.read())
+        data.update(info)
+    for x in data:
+        names.append(x)
+    return names
