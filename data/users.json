@@ -32,5 +32,21 @@
         "exp": 0,
         "uses": 0,
         "claimed": false
+    },
+    "618608687619244043": {
+        "library": {
+            "name": []
+        },
+        "deck": {
+            "name": []
+        },
+        "claim": false,
+        "rolls": 0,
+        "rank": [
+            "Apprentice"
+        ],
+        "level": 0,
+        "exp": 0,
+        "uses": 0
     }
 }
