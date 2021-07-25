@@ -145,6 +145,7 @@ async def register(ctx):
         user[str(ctx.author.id)]['library'] = {"name": []}
         user[str(ctx.author.id)]['deck'] = {"name": []}
         user[str(ctx.author.id)]['claim'] = False
+        user[str(ctx.author.id)]['wins'] = 0
         user[str(ctx.author.id)]['rolls'] = 0
         user[str(ctx.author.id)]['rank'] = ["Apprentice"]
         user[str(ctx.author.id)]['level'] = 0
@@ -206,6 +207,7 @@ async def roll(ctx):
     path = dir_path + "/data/cards/"
     
     cards = getCardsName()
+    
     rolled = random.choice(cards)
     
     library = {}
@@ -214,12 +216,15 @@ async def roll(ctx):
             info = json.loads(f.read())
         
         library.update(info)
-
+    
     msg = library[str(rolled)]['description']
 
     try:
         image = library[str(rolled)]['image']
     except:
+        image = "https://imgur.com/Q90fcUP.gif"
+
+    if image == "NA":
         image = "https://imgur.com/Q90fcUP.gif"
 
     def check(reaction, user):
@@ -254,7 +259,7 @@ async def roll(ctx):
                 users = json.loads(f.read())
             discord_id = users
 
-            if users[str(ctx.author.id)]['claimed'] == True:
+            if users[str(ctx.author.id)]['claim'] == True:
                 await ctx.send("Already claimed")
             else:
                 await drop.edit(content="*" + drop.content + "*" + " \nClaimed**")
@@ -265,7 +270,7 @@ async def roll(ctx):
                     library.append(rolled)
                     with open("data/users.json", "w") as f:
                         users[str(ctx.author.id)]['library']['name'] = library
-                        users[str(ctx.author.id)]['claimed'] = True
+                        users[str(ctx.author.id)]['claim'] = True
                         json.dump(users, f, indent=4)
                 else:
                     await ctx.send("Please use the ~register command before claiming cards.")
@@ -336,7 +341,7 @@ async def deck(ctx, command=None, *, Card=None):
         
 
 @client.command()
-async def battle(ctx, player2=None, *, mode=None):
+async def battle(ctx, player2=None, *, mode="Standard"):
     await ctx.send("WARNING: ~battle is in beta, beware of bugs and not working mechanics.")
     allCards = get_cards()
 
@@ -357,10 +362,11 @@ async def battle(ctx, player2=None, *, mode=None):
             self.health = health
 
     class game:
-        def __init(self, mode, maxhealth, maxcards):
+        def __init__(self, mode, maxhealth, maxcards, hasAttacked=False):
             self.mode = mode
             self.maxhealth = maxhealth
             self.maxcards = maxcards
+            self.hasAttacked = hasAttacked
     #player1 = Player(id, name, deck, hand, field, attackCards, health)
     player1 = Player(str(ctx.author.id), str(await client.fetch_user(ctx.author.id)), users[str(ctx.author.id)]['deck']['name'], [], ['Goblin', 'Mio', 'Yui'], ['Goblin'], [], 20)
 
@@ -370,11 +376,11 @@ async def battle(ctx, player2=None, *, mode=None):
     playerTurn = player1
     opponent = player2
 
-    if mode == None:
-        mode == 'standard'
-    if mode == 'standard':
-        Game = game(mode, 20, 60)
-
+    # if mode == None:
+        # mode == 'standard'
+    # if mode == 'standard':
+        # Game = game(mode, 20, 60, False)
+    Game = game(mode, 20, 60, False)
     for card in playerTurn.field:
         print(card)
     
@@ -399,7 +405,7 @@ async def battle(ctx, player2=None, *, mode=None):
                     global main
                     main=discord.Embed(title=f"{first.name} vs {second.name}", description=f"{turn.name}'s Turn \n{action}", color=0xff0000)
                     main.add_field(name=f"{first.name}'s cards", value="value", inline=True)
-                    main.add_field(name=f"{first.name}'s cards", value="value", inline=True)
+                    main.add_field(name=f"{second.name}'s cards", value="value", inline=True)
                     main.add_field(name="Field", value=f"{first.name}:{first.field}\n{second.name}:{second.field}", inline=False)
                     return main
 
@@ -425,7 +431,6 @@ async def battle(ctx, player2=None, *, mode=None):
                 await asyncio.sleep(1)
                 
                 
-
                 battleState = guilds[str(ctx.guild.id)]['battleState']
                 while battleState == True:
                     
@@ -531,6 +536,7 @@ async def battle(ctx, player2=None, *, mode=None):
                             elif playerTurn.name == player2.name:
                                 playerTurn = player1
                                 opponent = player2
+                            Game.hasAttacked = False
                             
                             main = createMain(player1, player2, playerTurn)
                             await battle.edit(embed=main)
@@ -538,7 +544,12 @@ async def battle(ctx, player2=None, *, mode=None):
                             pass
 
                     elif str(reaction) == "💖":
-                        print("sparkle")
+                        if str(user) == str(playerTurn.name):
+                            statMenu=discord.Embed(title="Stat Menu", description="View your or your opponents stats.", color=0xff0000)
+                            statMenu.add_field(name=f"{player1.name}'s Stats", value=f"Health: {player1.health}")
+                            statMenu.add_field(name=f"{player2.name}'s Stats", value=f"Health: {player2.health}")
+
+                            await battle.edit(embed=statMenu)
                     elif str(reaction) == "💥":
                         battlePhase = True
                         while battlePhase == True:
@@ -558,7 +569,7 @@ async def battle(ctx, player2=None, *, mode=None):
                             async def on_message(message):
 
                                 global selecting
-                                if selecting == False and message.author.id == playerTurn.id:
+                                if selecting == False and int(message.author.id) == int(playerTurn.id):
                                     selecting = True
                                     card1 = message.content
                                     if str(card1) in playerTurn.field:
@@ -569,8 +580,8 @@ async def battle(ctx, player2=None, *, mode=None):
                                         msg = await client.wait_for("message", check=check)
                                         await msg.delete()
 
-                                        if str(msg.content) == 'attack':
-
+                                        if str(msg.content) == 'attack' and Game.hasAttacked == False:
+                                            
                                             options = await ctx.send(f"{opponent.name} Type creature you want to block with, type a instant, or type No/no for no blocking")
                                             msg = await client.wait_for("message", check=check)
                                             await msg.delete()
@@ -602,6 +613,7 @@ async def battle(ctx, player2=None, *, mode=None):
                                                 await message.delete()
 
                                                 main = createMain(player1, player2, playerTurn, f"{card1} attacked Opponent's health.")
+                                                Game.hasAttacked == True
                                                 await battle.edit(embed=main)
                                         elif str(msg.content) == 'action':
                                             data = onAction(card)
@@ -653,7 +665,7 @@ async def battle(ctx, player2=None, *, mode=None):
 
                         questionEm=discord.Embed(title=f"Magic The Gathering Help")
                         questionEm.add_field(name=f"Links", value="How to Play: https://www.youtube.com/watch?v=RZyXU1L3JXk\n Wiki: https://github.com/AidenCastillo/klunker/wiki \n Card Wiki: https://github.com/AidenCastillo/klunker/wiki/Card-Wiki", inline=True)
-                        questionEm.add_field(name=f"Emote Commands and written Commands:", value="✅=End Turn\n💥=Attack Phase", inline=True)
+                        questionEm.add_field(name=f"Emote Commands and written Commands:", value="✅=End Turn\n💖=Stat Menu\n💥=Attack Phase\n🗺=History Menu\n🎛=Control Panel\n🏳=Surrender", inline=True)
 
                         await battle.edit(embed=questionEm)
                         

@@ -1,20 +1,24 @@
 {
     "593615922330075146": {
         "library": {
-            "name": []
+            "name": [
+                "Murder",
+                "Mio Akiyama",
+                "Desecrated Earth"
+            ]
         },
         "deck": {
             "name": []
         },
-        "claim": false,
+        "claim": true,
+        "wins": 0,
         "rolls": 0,
         "rank": [
             "Apprentice"
         ],
         "level": 0,
         "exp": 0,
-        "uses": 0,
-        "claimed": false
+        "uses": 0
     },
     "863629799301185537": {
         "library": {
@@ -24,14 +28,14 @@
             "name": []
         },
         "claim": false,
+        "wins": 0,
         "rolls": 0,
         "rank": [
             "Apprentice"
         ],
         "level": 0,
         "exp": 0,
-        "uses": 0,
-        "claimed": false
+        "uses": 0
     },
     "618608687619244043": {
         "library": {
@@ -41,6 +45,7 @@
             "name": []
         },
         "claim": false,
+        "wins": 0,
         "rolls": 0,
         "rank": [
             "Apprentice"
