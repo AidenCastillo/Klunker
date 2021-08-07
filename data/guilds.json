@@ -1,10 +1,12 @@
 {
     "792603275774001153": {
         "magic": true,
-        "battleState": false
+        "battleState": false,
+        "levelGain": false
     },
     "784885713035853854": {
         "magic": true,
-        "battleState": false
+        "battleState": false,
+        "levelGain": false
     }
 }

@@ -5,7 +5,7 @@
         "type": "creature",
         "stats": {
             "health": 1,
-            "attack": 1
+            "attack": 100
         },
         "cost": 2,
         "image": "NA",

@@ -18,7 +18,8 @@
         ],
         "level": 0,
         "exp": 0,
-        "uses": 0
+        "uses": 0,
+        "claimed": false
     },
     "863629799301185537": {
         "library": {
@@ -35,7 +36,8 @@
         ],
         "level": 0,
         "exp": 0,
-        "uses": 0
+        "uses": 0,
+        "claimed": false
     },
     "618608687619244043": {
         "library": {
@@ -52,6 +54,7 @@
         ],
         "level": 0,
         "exp": 0,
-        "uses": 0
+        "uses": 0,
+        "claimed": false
     }
 }

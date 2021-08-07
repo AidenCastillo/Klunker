@@ -1,9 +1,12 @@
 #Please copy the variable.py file from the templates folder, and place it in the
 #same directory as klunker.py. MUST BE IN THE SAVE DIRECTORY. Fill out the 
 #information accordingly to get the bot to work.
+from io import open_code
 from operator import truediv
 import os
 import sys
+
+from requests.api import options
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -93,6 +96,22 @@ async def before_reset():
             return
         await asyncio.sleep(1)
 
+
+
+
+
+# @client.event
+# async def on_message(message):
+#     with open("data/users.json") as f:
+#         users = json.loads(f.read())
+    
+#     if str(message.author.id) in users:
+#         users[str(message.author.id)]['exp'] += 1
+#         with open("data/users.json",  "w") as f:
+#             json.dump(users, f, indent=4)
+#     else:
+#         print("no")
+
 #Magic discord commands
 @client.command()
 @commands.has_permissions(kick_members=True)
@@ -122,6 +141,7 @@ async def magic(ctx, arg):
             msg = "Magic is not enabled"
 
         guild[str(ctx.guild.id)]['battleState'] = False
+        guild[str(ctx.guild.id)]['levelGain'] = False
 
     guilds.update(guild)
     with open("data/guilds.json", "w", encoding="utf8") as f:
@@ -385,6 +405,7 @@ async def battle(ctx, player2=None, *, mode="Standard"):
         print(card)
     
     guild = str(ctx.guild.id)
+    global battleState
     battleState = guilds[str(ctx.guild.id)]['battleState']
 
     if guild in guild:
@@ -429,6 +450,8 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                     await battle.add_reaction(reaction)
                     
                 await asyncio.sleep(1)
+                
+                
                 
                 
                 battleState = guilds[str(ctx.guild.id)]['battleState']
@@ -612,9 +635,16 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                                                 await options.delete()
                                                 await message.delete()
 
-                                                main = createMain(player1, player2, playerTurn, f"{card1} attacked Opponent's health.")
-                                                Game.hasAttacked == True
-                                                await battle.edit(embed=main)
+                                                if opponent.health <= 0:
+                                                    winScreen=discord.Embed(title="WINNER!", description=f"Winner is {playerTurn.name}")
+                                                    await battle.edit(embed=winScreen)
+                                                    global battleState
+                                                    print(battleState)
+                                                    battleState = False
+                                                else:
+                                                    main = createMain(player1, player2, playerTurn, f"{card1} attacked Opponent's health.")
+                                                    Game.hasAttacked == True
+                                                    await battle.edit(embed=main)
                                         elif str(msg.content) == 'action':
                                             data = onAction(card)
                                 else:
@@ -656,7 +686,7 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                         print("📜")
                     elif str(reaction) == "🏳":
                         #Surrender
-
+                        print(battleState)
                         battleState = False
                     elif str(reaction) == "❌":
                         print("x")
@@ -829,6 +859,23 @@ async def crypto(ctx):
     await ctx.send(embed=embed)
 
 #Admin and server
+@client.command()
+async def server(ctx):
+    with open("data/guilds.json") as f:
+        guilds = json.loads(f.read())
+    options = ["Magic", "Level Gain"]
+    embed=discord.Embed(title=f"Server Settings", description="Type setting name you want to change.\n Example: Level", color=0xff0000)
+    embed.add_field(name="Options", value=f"Magic: {guilds[str(ctx.guild.id)]['magic']}\nLevel Gain: {guilds[str(ctx.guild.id)]['levelGain']}\n")
+
+    await ctx.send(embed=embed)
+
+    @client.event
+    async def on_message(message):
+        if message.content in options:
+            print("in file")
+
+
+
 @client.command()
 @commands.has_permissions(kick_members=True)
 async def server_stats(ctx):
