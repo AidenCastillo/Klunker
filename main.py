@@ -456,9 +456,16 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                 
                 battleState = guilds[str(ctx.guild.id)]['battleState']
                 while battleState == True:
+                    print(battleState)
+
                     
-                    @client.event
-                    async def on_message(message):
+                    @client.listen('on_message')
+                    async def battleListener(message):
+                        with open("data/guilds.json") as f:
+                            guilds = json.loads(f.read())
+                        if guilds[str(ctx.guild.id)]['battlePhase'] == True or guilds[str(ctx.guild.id)]['battleState'] == False:
+                            return
+                        print("running")
                         instant = []
                         with open(f"data/cards/instant.json") as f:
                             library = json.loads(f.read())
@@ -575,11 +582,14 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                             await battle.edit(embed=statMenu)
                     elif str(reaction) == "💥":
                         battlePhase = True
+                        guilds[str(ctx.guild.id)]['battlePhase'] = True
+                        with open("data/guilds.json", "w") as f:
+                            json.dump(guilds, f, indent=4)
                         while battlePhase == True:
                         #battle phase
                             attackCards = str(playerTurn.attackCards).replace('[', '').replace(']', '').replace("'", '')
 
-                            attackPhase=discord.Embed(title="Attack Phase", description="Type the name of the card you want to attack with. Click the Back button to return to the main screen" ,color=0xff0000)
+                            attackPhase=discord.Embed(title="Attack Phase", description="Type the name of the card you want to attack with. Type 'back' to return to the main screen." ,color=0xff0000)
                             attackPhase.add_field(name="Attackable Cards", value=f"{attackCards}")
                             attackPhase.add_field(name="Target Cards", value=f"value")
 
@@ -588,40 +598,41 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                             #cards will have two different options on attack. They can use their normal attack that is traditional, and a action move with special attributes.
                             global selecting
                             selecting = False
-                            @client.event
-                            async def on_message(message):
+                            def check(user):
+                                return user == player1.name or player2.name
+                            message = await client.wait_for("message", check=check)
 
-                                global selecting
-                                if selecting == False and int(message.author.id) == int(playerTurn.id):
+                            
+                            if selecting == False and int(message.author.id) == int(playerTurn.id):
+                                if message.content == "back":
+                                    main = createMain(player1, player2, playerTurn)
+                                    battlePhase = False
+                                    await battle.edit(embed=main)
+                                    
+                                else:
                                     selecting = True
                                     card1 = message.content
                                     if str(card1) in playerTurn.field:
                                         def check(user):
                                             return user == player1.name or player2.name
-
                                         enter = await ctx.send("Enter 'attack' or 'action'")
                                         msg = await client.wait_for("message", check=check)
                                         await msg.delete()
-
                                         if str(msg.content) == 'attack' and Game.hasAttacked == False:
-                                            
+
                                             options = await ctx.send(f"{opponent.name} Type creature you want to block with, type a instant, or type No/no for no blocking")
                                             msg = await client.wait_for("message", check=check)
                                             await msg.delete()
-                                            
-                                            card2 = msg.content
 
+                                            card2 = msg.content
                                             if str(card2) in opponent.field:
                                                 data = onAttack(card1, card2)
-
                                                 if data[0] >= data[3]:
                                                     if data[0] == data[3]:
                                                         player1.field.remove(card1)
                                                         player2.field.remove(card2)
                                                     else:
                                                         player2.field.remove()
-
-
                                                     main = createMain(player1, player2, playerTurn, f"{card1} attacked {card2}")
                                                     await battle.edit(embed=main)
                                                     await enter.delete()
@@ -629,34 +640,38 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                                                     await message.delete()
                                             if msg.content == "No" or 'no':
                                                 data = onAttack(card1)
-
                                                 opponent.health -= data[0]
                                                 await enter.delete()
                                                 await options.delete()
                                                 await message.delete()
-
                                                 if opponent.health <= 0:
                                                     winScreen=discord.Embed(title="WINNER!", description=f"Winner is {playerTurn.name}")
                                                     await battle.edit(embed=winScreen)
-                                                    global battleState
-                                                    print(battleState)
-                                                    battleState = False
+                                                    
+                                                    guilds[str(ctx.guild.id)]['battleState'] = False
+                                                    with open("data/guilds.json", "w") as f:
+                                                        json.dump(guilds, f, indent=4)
+                                                    selecting = False
+                                                    battlePhase = False
+                                                    
+
                                                 else:
                                                     main = createMain(player1, player2, playerTurn, f"{card1} attacked Opponent's health.")
                                                     Game.hasAttacked == True
                                                     await battle.edit(embed=main)
                                         elif str(msg.content) == 'action':
                                             data = onAction(card)
-                                else:
-                                    pass
 
 
-                            reaction, user = await client.wait_for("reaction_add", check=check)
+                            # reaction, user = await client.wait_for("reaction_add", check=check)
 
-                            if str(reaction) == "↩":
-                                main = createMain(player1, player2, playerTurn)
-                                battlePhase = False
-                                await battle.edit(embed=main)
+                            # if str(reaction) == "↩":
+                            #     main = createMain(player1, player2, playerTurn)
+                            #     battlePhase = False
+                            #     await battle.edit(embed=main)
+                        guilds[str(ctx.guild.id)]['battlePhase'] = False
+                        with open("data/guilds.json", "w") as f:
+                            json.dump(guilds, f, indent=4)
                     elif str(reaction) == "🗺":
                         #History Panel
                         
@@ -676,8 +691,8 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                         controlPanel=discord.Embed(title="Control Panel", description="This panel you can change game settings and values.\nTo change settings, type ~{setting name} {attribute}", color=0xf1c40f)
                         controlPanel.add_field(name="Settings", value=f"battlestate:{battleState}\n maxhealth:")
                         await battle.edit(embed=controlPanel)
-                        @client.event
-                        async def on_message(message):
+                        @client.listen('on_message')
+                        async def listener(message):
                             if str(message.content) == '~battlestate false':
                                 print("battle state: false")
                                 global battleState
@@ -706,6 +721,11 @@ async def battle(ctx, player2=None, *, mode="Standard"):
 
                     reactions = ["✅", "💖", "💥", "🗺", "📢", "🎛", "📜", "🏳", "❌","❔", "↩"]
 
+                    with open("data/guilds.json")as f:
+                        file = json.loads(f.read())
+                    battleState = file[str(ctx.guild.id)]['battleState']
+                print("end")
+                return
             else:
                 await ctx.send('Player 1 or Player 2 is in not registered. Please use ~register')
         else:
@@ -869,8 +889,8 @@ async def server(ctx):
 
     await ctx.send(embed=embed)
 
-    @client.event
-    async def on_message(message):
+    @client.listen('on_message')
+    async def listener(message):
         if message.content in options:
             print("in file")
 
