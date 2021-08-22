@@ -65,6 +65,7 @@ async def on_ready():
         guilds = json.loads(f.read())
     for x in guilds:
         guilds[x]['battleState'] = False
+        guilds[x]['battlePhase'] = False
         with open('data/guilds.json', 'w') as f:
             json.dump(guilds, f, indent=4)
     reset.start()
@@ -388,10 +389,10 @@ async def battle(ctx, player2=None, *, mode="Standard"):
             self.maxcards = maxcards
             self.hasAttacked = hasAttacked
     #player1 = Player(id, name, deck, hand, field, attackCards, health)
-    player1 = Player(str(ctx.author.id), str(await client.fetch_user(ctx.author.id)), users[str(ctx.author.id)]['deck']['name'], [], ['Goblin', 'Mio', 'Yui'], ['Goblin'], [], 20)
+    player1 = Player(str(ctx.author.id), str(await client.fetch_user(ctx.author.id)), users[str(ctx.author.id)]['deck']['name'], [], ['Goblin', 'Mio', 'Yui'], ['Goblin', "Yui"], [], 20)
 
     playerId = str(player2).replace('@', '').replace('!', '').replace('<', '').replace('>', '')
-    player2 = Player(playerId, await client.fetch_user(player2), users[str(playerId)]['deck']['name'], [], ['Goblin'],  ['Goblin'], [], 20)
+    player2 = Player(playerId, await client.fetch_user(playerId), users[str(playerId)]['deck']['name'], [], ['Goblin'],  ['Goblin'], [], 20)
 
     playerTurn = player1
     opponent = player2
@@ -587,11 +588,14 @@ async def battle(ctx, player2=None, *, mode="Standard"):
                             json.dump(guilds, f, indent=4)
                         while battlePhase == True:
                         #battle phase
-                            attackCards = str(playerTurn.attackCards).replace('[', '').replace(']', '').replace("'", '')
+                            attackCards1 = str(playerTurn.attackCards).replace('[', '').replace(']', '').replace("'", '')
+                            attackCards2 = str(opponent.attackCards).replace('[', '').replace(']', '').replace("'", '')
+                            if attackCards2 == '':
+                                attackCards2 = "None"
 
                             attackPhase=discord.Embed(title="Attack Phase", description="Type the name of the card you want to attack with. Type 'back' to return to the main screen." ,color=0xff0000)
-                            attackPhase.add_field(name="Attackable Cards", value=f"{attackCards}")
-                            attackPhase.add_field(name="Target Cards", value=f"value")
+                            attackPhase.add_field(name="Attackable Cards", value=f"{attackCards1}")
+                            attackPhase.add_field(name="Target Cards", value=f"{attackCards2}")
 
                             await battle.edit(embed=attackPhase)
 
@@ -657,10 +661,24 @@ async def battle(ctx, player2=None, *, mode="Standard"):
 
                                                 else:
                                                     main = createMain(player1, player2, playerTurn, f"{card1} attacked Opponent's health.")
-                                                    Game.hasAttacked == True
                                                     await battle.edit(embed=main)
+                                                    Game.hasAttacked == True
+                                                    
                                         elif str(msg.content) == 'action':
-                                            data = onAction(card)
+                                            library = get_cards()
+                                            action = library[card]['action']
+
+                                            if action in ["stun"]:
+                                                await ctx.send("Please enter a opponent creature to remove from the battle field.")
+                                                target = await client.wait_for("message", check=check)
+                                                try:
+                                                    player1, player2 = onAction(card, player1, player2, playerTurn, opponent, target.content)
+                                                    selecting = False
+                                                    battlePhase = False
+                                                except:
+                                                    await ctx.send("Something went wrong. Check your spelling, and reread the question.")
+                                            main = createMain(player1, player2, playerTurn)
+                                            await battle.edit(embed=main)
 
 
                             # reaction, user = await client.wait_for("reaction_add", check=check)
