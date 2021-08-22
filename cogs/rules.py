@@ -69,12 +69,25 @@ def onAttack(card1, card2=None):
             data.append(health)
     return data
 
-def onAction(card):
+def onAction(card, player1, player2, playerTurn, opponent, arg=None, arg2=None):
+    '''
+    Ran when a card uses a action.
+
+    Required field:`card`, `player1`, `player2`, `playerTurn`, `opponent`
+    Optional field:`arg`, `arg2`
+    '''
     library = get_cards()
     with open("data/action.json") as f:
-        data = json.load(f.read())
+        data = json.loads(f.read())
     
     action = library[card]['action']
-    data = data[action]
+    
+    if action == "roll murder":
+        pass
+    elif action == "stun":
+        print(arg)
+        print(opponent.attackCards)
+        opponent.attackCards.remove(arg)
+        print(opponent.attackCards)
 
-    return action, data
+    return player1, player2

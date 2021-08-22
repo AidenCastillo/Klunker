@@ -1,6 +1,5 @@
 {
     "Goblin": {
-        "name": "Goblin",
         "description": "Goblin go brrrr",
         "type": "creature",
         "stats": {
@@ -12,7 +11,6 @@
         "action": ""
     },
     "Your Mom": {
-        "name": "Your Mom",
         "type": "Monster",
         "stats": {
             "health": 5,
@@ -20,19 +18,73 @@
         },
         "cost": 4,
         "description": "She is gonna hit you with a shoe.",
-        "image": "https://imgur.com/DTfxbWB",
+        "image": "https://i.imgur.com/DTfxbWB.mp4",
         "action": "ground pound"
     },
-    "Mio Akiyama":{
-        "name": "Mio Akiyama",
+    "Mio Akiyama": {
         "type": "Human",
         "stats": {
             "health": 8,
             "attack": 2
         },
         "cost": 4,
-        "description": "Stuns creature with dazzle.",
+        "description": "Mio's bass stuns opponent creature.",
         "image": "NA",
         "action": "stun"
-    }   
+    },
+    "Yui": {
+        "type": "Human",
+        "stats": {
+            "health": 2,
+            "attack": 2
+        },
+        "cost": 3,
+        "description": "Yui's guitar stun opponent creature.",
+        "image": "NA",
+        "action": "stun"
+    },
+    "Allen Pan": {
+        "type": "Human",
+        "stats": {
+            "health": 3,
+            "attack": 1
+        },
+        "cost": 4,
+        "description": "Creates random robotic contraption from Allen Pan youtube channel. Each with different affect.",
+        "image": "NA",
+        "action": "random robot"
+    },
+    "Alpha Tyrranax":{
+        "type": "Dinosaur",
+        "stats": {
+            "health": 6,
+            "attack": 5
+        },
+        "cost": 6,
+        "description": "Hungery Dinosaur, the last creature to encounter him ended in disaster.",
+        "image": "NA",
+        "action": ""
+    },
+    "Among Us Imposter":{
+        "type": "Alien",
+        "stats": {
+            "health": 30,
+            "attack": 0
+        },
+        "cost": 8,
+        "description": "Sussy imposter, because before he slices your throat. Roll 8+ and choose a creature to murder. If you can roll a 5+, he will be ejected from the game.",
+        "image": "https://i.imgur.com/HDCgx6J.jpeg",
+        "action": "roll murder"
+    },
+    "Among Us Crewmate":{
+        "type": "Human",
+        "stats": {
+            "health": 2,
+            "attack": 0
+        },
+        "cost": 0,
+        "description": "Sussy crewmate, could be a imposter or could be a regular crewmate. Roll 8+ and choose a creature to eject from the game.",
+        "image": "https://i.imgur.com/5EinLMo.jpeg",
+        "action": "vote off"
+    }
 }
