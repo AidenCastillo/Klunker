@@ -1,13 +1,8 @@
 #Please copy the variable.py file from the templates folder, and place it in the
 #same directory as klunker.py. MUST BE IN THE SAVE DIRECTORY. Fill out the 
 #information accordingly to get the bot to work.
-from io import open_code
-from operator import truediv
 import os
 import sys
-
-from requests.api import options
-
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(1, dir_path)
@@ -37,7 +32,6 @@ import time
 import datetime as dt
 import random
 import asyncio
-from asyncio.tasks import ensure_future
 import requests
 from pprint import pprint
 import traceback
