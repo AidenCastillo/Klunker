@@ -8,9 +8,9 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(1, dir_path)
 
 from variable import *
-
 from cogs.cog import *
 from cogs.rules import *
+from data.uno.cards import *
 
 import discord 
 import discord.ext 
@@ -823,6 +823,43 @@ async def add(ctx):
 
 
 #Dm Channel
+@client.command()
+async def uno(ctx, player2=None, player3=None, player4=None):
+    player2id = str(player2).replace('@', '').replace('!', '').replace('<', '').replace('>', '')
+    player3id = str(player3).replace('@', '').replace('!', '').replace('<', '').replace('>', '')
+    player4id = str(player4).replace('@', '').replace('!', '').replace('<', '').replace('>', '')
+    class Game:
+        def __init__(self, state, scoreLimit, playerCount):
+            self.state = state
+            self.scoreLimit = scoreLimit
+            self.playerCount = playerCount
+    class Player:
+        def __init__(self, id, hand):
+            self.id = id
+            self.hand = hand
+    
+    playerCount = 2
+
+    if player3id is not None:
+        player3 = Player(player3id, [])
+        playerCount += 1
+    if player4id is not None:
+        player4 = Player(player4id, [])
+        playerCount += 1
+
+    game = Game(True, 500, playerCount)
+    player1 = Player(str(ctx.author.id), [])
+    player2 = Player(player2id, [])
+
+    for x in range(0,7):
+        for x in [player1, player2, player3, player4]:
+            try:
+                x.hand.append(random.choice(allUnoCards))
+            except:
+                pass
+    while game.state == True:
+        pass
+
 @client.command()
 @commands.dm_only()
 async def bughunter(ctx):
