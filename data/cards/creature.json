@@ -86,5 +86,16 @@
         "description": "Sussy crewmate, could be a imposter or could be a regular crewmate. Roll 8+ and choose a creature to eject from the game.",
         "image": "https://i.imgur.com/5EinLMo.jpeg",
         "action": "vote off"
+    },
+    "Shawn (Fallout 4)":{
+        "Type": "Synth",
+        "stats": {
+            "health": 10,
+            "attack": 1
+        },
+        "cost": 4,
+        "description": "We get it shawn, you want junk from the commonwealth, stfu.",
+        "image": "NA",
+        "action": "annoy"
     }
 }
